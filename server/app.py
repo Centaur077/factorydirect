@@ -46,6 +46,9 @@ def initialize():
           request_id TEXT REFERENCES requests(id), position INTEGER,
           snapshot TEXT NOT NULL, PRIMARY KEY(request_id,position));
         ''')
+        db.execute('CREATE TABLE IF NOT EXISTS source_listings(id TEXT PRIMARY KEY, payload TEXT NOT NULL)')
+        for listing in json.loads((ROOT/'server'/'sources.json').read_text()):
+            db.execute('INSERT INTO source_listings VALUES(?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload',(listing['id'],json.dumps(listing,ensure_ascii=False)))
         accounts.migrate(db)
         # Seed only a new database; never overwrite edited catalog records on restart.
         if not db.execute('SELECT 1 FROM products LIMIT 1').fetchone():
@@ -161,6 +164,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path=urlsplit(self.path).path
+        if path=='/api/sources':
+            with connect() as db:
+                return self.reply(200,{'listings':[json.loads(r[0]) for r in db.execute('SELECT payload FROM source_listings ORDER BY rowid')]})
         if path=='/api/seller/me':
             with connect() as db:
                 user=accounts.authenticate(db,self.headers.get('Cookie'))
@@ -178,7 +184,7 @@ class Handler(BaseHTTPRequestHandler):
             return self.reply(200,data)
         # Explicit public-file allowlist: never serve the database, server or .git.
         file=ROOT / ('index.html' if path=='/' else path.lstrip('/'))
-        allowed=path in ('/','/index.html','/style.css','/design.css','/script.js','/features.js','/api-client.js','/seller.html','/seller.js','/seller.css')
+        allowed=path in ('/','/index.html','/style.css','/design.css','/script.js','/features.js','/api-client.js','/seller.html','/seller.js','/seller.css','/sources.js','/sources-data.js','/sources.css')
         allowed=allowed or (path.startswith('/assets/') and file.suffix=='.svg' and file.resolve().parent==ROOT/'assets')
         if not allowed or not file.is_file(): return self.reply(404,{'error':'Not found'})
         mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml'}

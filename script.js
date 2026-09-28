@@ -383,7 +383,7 @@ function bindEvents(){
   $('#themeToggle').addEventListener('click',toggleTheme);
   $('#mobileMenuButton').addEventListener('click',()=>{const n=$('#mainNav');const open=n.classList.toggle('open');$('#mobileMenuButton').setAttribute('aria-expanded',String(open));});
   $$('#mainNav a').forEach(a=>a.addEventListener('click',()=>$('#mainNav').classList.remove('open')));
-  $('#heroSearchForm').addEventListener('submit',e=>{e.preventDefault();$('#catalogSearch').value=$('#heroSearch').value;renderProducts();$('#catalog').scrollIntoView({behavior:'smooth'});});
+  $('#heroSearchForm').addEventListener('submit',e=>{e.preventDefault();const q=$('#heroSearch').value;$('#catalogSearch').value=q;renderProducts();$('#sourceSearch').value=q;renderSources();const hasSource=sourceListings.some(x=>`${x.name} ${x.company} ${x.city}`.toLowerCase().includes(q.trim().toLowerCase()));$(hasSource?'#realSources':'#catalog').scrollIntoView({behavior:'smooth'});});
   $('#catalogSearch').addEventListener('input',renderProducts);$('#categoryFilter').addEventListener('change',renderProducts);$('#sortFilter').addEventListener('change',renderProducts);
   $('#showAllManufacturers').addEventListener('click',()=>{showAllMakers=!showAllMakers;renderManufacturers();});
   $('[data-jump-smart]').addEventListener('click',()=>$('#smartMatch').scrollIntoView({behavior:'smooth'}));

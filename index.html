@@ -9,6 +9,7 @@
   <title>FactoryDirect — напрямую от производителя</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="design.css">
+  <link rel="stylesheet" href="sources.css">
 </head>
 <body>
 <div class="demo-ribbon" data-i18n="demoDataNote">Данные и цены в прототипе демонстрационные.</div>
@@ -19,6 +20,7 @@
 
     <button id="mobileMenuButton" class="mobile-menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Menu">☰</button>
     <nav id="mainNav" class="main-nav" aria-label="Main navigation">
+      <a href="#realSources" data-i18n="navSources">Источники</a>
       <a href="#catalog" data-i18n="navCatalog">Каталог</a>
       <a href="#manufacturers" data-i18n="navManufacturers">Производители</a>
       <a href="#mapSection" data-i18n="navMap">Карта</a>
@@ -84,6 +86,13 @@
       <article><strong>8</strong><span data-i18n="metricRegions">городов и регионов</span></article>
       <article><strong>3</strong><span data-i18n="metricLanguages">языка интерфейса</span></article>
       <article><strong>1</strong><span data-i18n="metricFlow">единый B2B-процесс</span></article>
+    </section>
+
+    <section id="realSources" class="section sources-section">
+      <div class="section-head"><div><p class="eyebrow" data-source-text="eyebrow"></p><h2 data-source-text="title"></h2><p class="section-subtitle" data-source-text="subtitle"></p></div><span class="verified-chip">28.09.2026</span></div>
+      <div class="sources-tools"><input id="sourceSearch" type="search" aria-label="Поиск источников"><select id="sourceCategory" aria-label="Категория"><option value="all"></option><option value="boxes"></option><option value="cups"></option></select><button id="sourceCompareButton" class="secondary"></button></div>
+      <p class="muted source-disclaimer" data-source-text="disclaimer"></p><p id="sourceCount" role="status"></p><div id="sourceGrid" class="product-grid"></div>
+      <div id="sourceComparison" hidden></div>
     </section>
 
     <section id="catalog" class="section reveal">
@@ -287,5 +296,7 @@
   <script src="script.js"></script>
   <script src="features.js"></script>
   <script src="api-client.js"></script>
+  <script src="sources-data.js"></script>
+  <script src="sources.js"></script>
 </body>
 </html>
