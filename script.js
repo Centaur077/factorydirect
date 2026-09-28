@@ -395,7 +395,7 @@ function bindEvents(){
   $('[data-close-cart]').addEventListener('click',()=>closeModal('cartModal'));$('[data-close-product]').addEventListener('click',()=>closeModal('productModal'));$('[data-close-manufacturer]').addEventListener('click',()=>closeModal('manufacturerModal'));
   ['cartModal','productModal','manufacturerModal'].forEach(id=>$('#'+id).addEventListener('click',e=>{if(e.target.id===id)closeModal(id);}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal:not(.hidden)').forEach(m=>closeModal(m.id));});
-  $('#checkoutButton').addEventListener('click',()=>{if(!cart.length){showToast(t('emptyCart'));return;}const id=`#FD-${Math.floor(1000+Math.random()*9000)}`;showToast(t('requestSent').replace('{id}',id));cart=[];saveCart();renderCart();setTimeout(()=>closeModal('cartModal'),700);});
+  $('#checkoutButton').addEventListener('click',()=>sendPurchaseRequest());
 }
 
 function init(){initTheme();fillControls();bindEvents();applyI18n();updateCartCount();initReveal();setTimeout(initMap,100);setTimeout(runSmartMatch,180);}

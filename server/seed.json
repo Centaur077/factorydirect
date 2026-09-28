@@ -1,0 +1,746 @@
+{
+  "cities": {
+    "almaty": {
+      "ru": "Алматы",
+      "kk": "Алматы",
+      "en": "Almaty",
+      "lat": 43.2389,
+      "lng": 76.8897
+    },
+    "astana": {
+      "ru": "Астана",
+      "kk": "Астана",
+      "en": "Astana",
+      "lat": 51.1694,
+      "lng": 71.4491
+    },
+    "karaganda": {
+      "ru": "Караганда",
+      "kk": "Қарағанды",
+      "en": "Karaganda",
+      "lat": 49.8064,
+      "lng": 73.0855
+    },
+    "shymkent": {
+      "ru": "Шымкент",
+      "kk": "Шымкент",
+      "en": "Shymkent",
+      "lat": 42.3417,
+      "lng": 69.5901
+    },
+    "atyrau": {
+      "ru": "Атырау",
+      "kk": "Атырау",
+      "en": "Atyrau",
+      "lat": 47.0945,
+      "lng": 51.9238
+    },
+    "pavlodar": {
+      "ru": "Павлодар",
+      "kk": "Павлодар",
+      "en": "Pavlodar",
+      "lat": 52.2873,
+      "lng": 76.9674
+    },
+    "kostanay": {
+      "ru": "Костанай",
+      "kk": "Қостанай",
+      "en": "Kostanay",
+      "lat": 53.2144,
+      "lng": 63.6246
+    },
+    "oskemen": {
+      "ru": "Усть-Каменогорск",
+      "kk": "Өскемен",
+      "en": "Oskemen",
+      "lat": 49.9483,
+      "lng": 82.6285
+    }
+  },
+  "manufacturers": [
+    {
+      "id": "aqua",
+      "name": "Aqua Factory",
+      "initials": "AF",
+      "city": "almaty",
+      "rating": 4.8,
+      "dispatch": 1,
+      "minOrder": 24,
+      "categories": [
+        "food"
+      ],
+      "description": {
+        "ru": "Производитель питьевой воды и безалкогольных напитков для розницы и HoReCa.",
+        "kk": "Бөлшек сауда мен HoReCa үшін ауыз су және алкогольсіз сусын өндірушісі.",
+        "en": "Producer of drinking water and soft drinks for retail and HoReCa."
+      }
+    },
+    {
+      "id": "alatau",
+      "name": "Alatau Coffee",
+      "initials": "AC",
+      "city": "almaty",
+      "rating": 4.9,
+      "dispatch": 2,
+      "minOrder": 10,
+      "categories": [
+        "food"
+      ],
+      "description": {
+        "ru": "Обжарка кофе небольшими партиями, B2B-поставки для кофеен и офисов.",
+        "kk": "Кофені шағын партиямен қуыру, кофеханалар мен кеңселерге B2B жеткізу.",
+        "en": "Small-batch coffee roasting with B2B supply for cafés and offices."
+      }
+    },
+    {
+      "id": "textile",
+      "name": "Textile KZ",
+      "initials": "TK",
+      "city": "shymkent",
+      "rating": 4.7,
+      "dispatch": 3,
+      "minOrder": 50,
+      "categories": [
+        "clothing"
+      ],
+      "description": {
+        "ru": "Базовая одежда и корпоративный текстиль с возможностью брендирования.",
+        "kk": "Брендтеу мүмкіндігі бар базалық киім және корпоративтік тоқыма.",
+        "en": "Basic apparel and corporate textiles with branding options."
+      }
+    },
+    {
+      "id": "sweet",
+      "name": "Sweet Factory",
+      "initials": "SF",
+      "city": "karaganda",
+      "rating": 4.6,
+      "dispatch": 2,
+      "minOrder": 40,
+      "categories": [
+        "food"
+      ],
+      "description": {
+        "ru": "Шоколад и кондитерские изделия для магазинов, кофеен и корпоративных наборов.",
+        "kk": "Дүкендерге, кофеханаларға және корпоративтік жиынтықтарға арналған шоколад пен кондитерлік өнімдер.",
+        "en": "Chocolate and confectionery for stores, cafés, and corporate gift sets."
+      }
+    },
+    {
+      "id": "clean",
+      "name": "CleanPro",
+      "initials": "CP",
+      "city": "astana",
+      "rating": 4.8,
+      "dispatch": 2,
+      "minOrder": 20,
+      "categories": [
+        "home"
+      ],
+      "description": {
+        "ru": "Бытовая химия и профессиональные средства для клининга и HoReCa.",
+        "kk": "Клининг пен HoReCa үшін тұрмыстық химия және кәсіби құралдар.",
+        "en": "Household and professional cleaning products for cleaning companies and HoReCa."
+      }
+    },
+    {
+      "id": "tech",
+      "name": "TechFactory",
+      "initials": "TF",
+      "city": "astana",
+      "rating": 4.5,
+      "dispatch": 4,
+      "minOrder": 10,
+      "categories": [
+        "tech"
+      ],
+      "description": {
+        "ru": "Потребительская электроника и аксессуары под локальные B2B-заказы.",
+        "kk": "Жергілікті B2B тапсырыстарға арналған электроника мен аксессуарлар.",
+        "en": "Consumer electronics and accessories for local B2B orders."
+      }
+    },
+    {
+      "id": "steppepack",
+      "name": "SteppePack",
+      "initials": "SP",
+      "city": "kostanay",
+      "rating": 4.9,
+      "dispatch": 2,
+      "minOrder": 200,
+      "categories": [
+        "packaging"
+      ],
+      "description": {
+        "ru": "Картонная и бумажная упаковка для e-commerce, доставки еды и производства.",
+        "kk": "E-commerce, тағам жеткізу және өндіріс үшін картон және қағаз қаптама.",
+        "en": "Cardboard and paper packaging for e-commerce, food delivery, and manufacturing."
+      }
+    },
+    {
+      "id": "pavlodarmet",
+      "name": "Pavlodar Metal",
+      "initials": "PM",
+      "city": "pavlodar",
+      "rating": 4.7,
+      "dispatch": 4,
+      "minOrder": 20,
+      "categories": [
+        "construction"
+      ],
+      "description": {
+        "ru": "Металлопрокат и базовые строительные профили для малого и среднего бизнеса.",
+        "kk": "Шағын және орта бизнеске арналған металл прокаты және құрылыс профильдері.",
+        "en": "Rolled metal and basic construction profiles for SMEs."
+      }
+    },
+    {
+      "id": "atyrauchem",
+      "name": "Atyrau Home Lab",
+      "initials": "AH",
+      "city": "atyrau",
+      "rating": 4.6,
+      "dispatch": 3,
+      "minOrder": 30,
+      "categories": [
+        "home"
+      ],
+      "description": {
+        "ru": "Средства для ухода за домом, концентраты и private-label партии.",
+        "kk": "Үйге күтім жасау құралдары, концентраттар және private-label партиялары.",
+        "en": "Home-care products, concentrates, and private-label batches."
+      }
+    },
+    {
+      "id": "eastfoods",
+      "name": "East Foods",
+      "initials": "EF",
+      "city": "oskemen",
+      "rating": 4.8,
+      "dispatch": 3,
+      "minOrder": 25,
+      "categories": [
+        "food"
+      ],
+      "description": {
+        "ru": "Снэки, крупы и сухие продукты для магазинов и корпоративного питания.",
+        "kk": "Дүкендер мен корпоративтік тамақтануға арналған снектер, жармалар және құрғақ өнімдер.",
+        "en": "Snacks, grains, and dry foods for stores and corporate catering."
+      }
+    },
+    {
+      "id": "nomadwear",
+      "name": "Nomad Wear",
+      "initials": "NW",
+      "city": "almaty",
+      "rating": 4.9,
+      "dispatch": 4,
+      "minOrder": 30,
+      "categories": [
+        "clothing"
+      ],
+      "description": {
+        "ru": "Мерч и базовая одежда для брендов, мероприятий и корпоративных команд.",
+        "kk": "Брендтерге, іс-шараларға және корпоративтік командаларға арналған мерч пен базалық киім.",
+        "en": "Merch and basic apparel for brands, events, and corporate teams."
+      }
+    },
+    {
+      "id": "shymkentpack",
+      "name": "Ontustik Packaging",
+      "initials": "OP",
+      "city": "shymkent",
+      "rating": 4.5,
+      "dispatch": 2,
+      "minOrder": 150,
+      "categories": [
+        "packaging"
+      ],
+      "description": {
+        "ru": "Пищевая и транспортная упаковка для локальных производителей.",
+        "kk": "Жергілікті өндірушілерге арналған тағамдық және тасымалдау қаптамасы.",
+        "en": "Food and transport packaging for local manufacturers."
+      }
+    }
+  ],
+  "products": [
+    {
+      "id": "water",
+      "icon": "💧",
+      "category": "food",
+      "name": {
+        "ru": "Питьевая вода 1,5 л",
+        "kk": "Ауыз суы 1,5 л",
+        "en": "Drinking water 1.5 L"
+      },
+      "unit": {
+        "ru": "бутылка",
+        "kk": "бөтелке",
+        "en": "bottle"
+      },
+      "retail": 320,
+      "offers": [
+        {
+          "maker": "aqua",
+          "base": 245,
+          "tiers": [
+            [
+              24,
+              245
+            ],
+            [
+              120,
+              228
+            ],
+            [
+              480,
+              210
+            ]
+          ]
+        },
+        {
+          "maker": "eastfoods",
+          "base": 258,
+          "tiers": [
+            [
+              25,
+              258
+            ],
+            [
+              100,
+              240
+            ],
+            [
+              400,
+              220
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coffee",
+      "icon": "☕",
+      "category": "food",
+      "name": {
+        "ru": "Кофе в зернах 1 кг",
+        "kk": "Дәнді кофе 1 кг",
+        "en": "Coffee beans 1 kg"
+      },
+      "unit": {
+        "ru": "кг",
+        "kk": "кг",
+        "en": "kg"
+      },
+      "retail": 7900,
+      "offers": [
+        {
+          "maker": "alatau",
+          "base": 6500,
+          "tiers": [
+            [
+              10,
+              6500
+            ],
+            [
+              30,
+              5850
+            ],
+            [
+              80,
+              5450
+            ]
+          ]
+        },
+        {
+          "maker": "eastfoods",
+          "base": 6800,
+          "tiers": [
+            [
+              25,
+              6800
+            ],
+            [
+              50,
+              6200
+            ],
+            [
+              100,
+              5900
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tshirt",
+      "icon": "👕",
+      "category": "clothing",
+      "name": {
+        "ru": "Хлопковая футболка",
+        "kk": "Мақта футболкасы",
+        "en": "Cotton T-shirt"
+      },
+      "unit": {
+        "ru": "шт.",
+        "kk": "дана",
+        "en": "pcs"
+      },
+      "retail": 6200,
+      "offers": [
+        {
+          "maker": "textile",
+          "base": 3900,
+          "tiers": [
+            [
+              50,
+              3900
+            ],
+            [
+              100,
+              3550
+            ],
+            [
+              300,
+              3200
+            ]
+          ]
+        },
+        {
+          "maker": "nomadwear",
+          "base": 4300,
+          "tiers": [
+            [
+              30,
+              4300
+            ],
+            [
+              100,
+              3800
+            ],
+            [
+              250,
+              3450
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chocolate",
+      "icon": "🍫",
+      "category": "food",
+      "name": {
+        "ru": "Шоколад 90 г",
+        "kk": "Шоколад 90 г",
+        "en": "Chocolate 90 g"
+      },
+      "unit": {
+        "ru": "плитка",
+        "kk": "плитка",
+        "en": "bar"
+      },
+      "retail": 720,
+      "offers": [
+        {
+          "maker": "sweet",
+          "base": 515,
+          "tiers": [
+            [
+              40,
+              515
+            ],
+            [
+              120,
+              470
+            ],
+            [
+              500,
+              430
+            ]
+          ]
+        },
+        {
+          "maker": "eastfoods",
+          "base": 540,
+          "tiers": [
+            [
+              50,
+              540
+            ],
+            [
+              150,
+              490
+            ],
+            [
+              500,
+              448
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cleaner",
+      "icon": "🧴",
+      "category": "home",
+      "name": {
+        "ru": "Средство для уборки 1 л",
+        "kk": "Тазалау құралы 1 л",
+        "en": "Household cleaner 1 L"
+      },
+      "unit": {
+        "ru": "бутылка",
+        "kk": "бөтелке",
+        "en": "bottle"
+      },
+      "retail": 2600,
+      "offers": [
+        {
+          "maker": "clean",
+          "base": 1850,
+          "tiers": [
+            [
+              20,
+              1850
+            ],
+            [
+              60,
+              1690
+            ],
+            [
+              180,
+              1510
+            ]
+          ]
+        },
+        {
+          "maker": "atyrauchem",
+          "base": 1780,
+          "tiers": [
+            [
+              30,
+              1780
+            ],
+            [
+              90,
+              1600
+            ],
+            [
+              240,
+              1460
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "headphones",
+      "icon": "🎧",
+      "category": "tech",
+      "name": {
+        "ru": "Bluetooth-наушники",
+        "kk": "Bluetooth құлаққаптары",
+        "en": "Bluetooth headphones"
+      },
+      "unit": {
+        "ru": "комплект",
+        "kk": "жиынтық",
+        "en": "set"
+      },
+      "retail": 12900,
+      "offers": [
+        {
+          "maker": "tech",
+          "base": 8900,
+          "tiers": [
+            [
+              10,
+              8900
+            ],
+            [
+              30,
+              8250
+            ],
+            [
+              80,
+              7600
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "box",
+      "icon": "📦",
+      "category": "packaging",
+      "name": {
+        "ru": "Коробка для доставки M",
+        "kk": "Жеткізу қорабы M",
+        "en": "Delivery box M"
+      },
+      "unit": {
+        "ru": "шт.",
+        "kk": "дана",
+        "en": "pcs"
+      },
+      "retail": 410,
+      "offers": [
+        {
+          "maker": "steppepack",
+          "base": 250,
+          "tiers": [
+            [
+              200,
+              250
+            ],
+            [
+              500,
+              220
+            ],
+            [
+              1500,
+              185
+            ]
+          ]
+        },
+        {
+          "maker": "shymkentpack",
+          "base": 265,
+          "tiers": [
+            [
+              150,
+              265
+            ],
+            [
+              600,
+              215
+            ],
+            [
+              1800,
+              178
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "icon": "🧱",
+      "category": "construction",
+      "name": {
+        "ru": "Металлический профиль 3 м",
+        "kk": "Металл профиль 3 м",
+        "en": "Metal profile 3 m"
+      },
+      "unit": {
+        "ru": "шт.",
+        "kk": "дана",
+        "en": "pcs"
+      },
+      "retail": 3900,
+      "offers": [
+        {
+          "maker": "pavlodarmet",
+          "base": 3050,
+          "tiers": [
+            [
+              20,
+              3050
+            ],
+            [
+              80,
+              2810
+            ],
+            [
+              250,
+              2550
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "distances": {
+    "almaty": {
+      "almaty": 25,
+      "astana": 1210,
+      "karaganda": 1000,
+      "shymkent": 690,
+      "atyrau": 2740,
+      "pavlodar": 1450,
+      "kostanay": 1900,
+      "oskemen": 1040
+    },
+    "astana": {
+      "almaty": 1210,
+      "astana": 25,
+      "karaganda": 215,
+      "shymkent": 1500,
+      "atyrau": 1840,
+      "pavlodar": 440,
+      "kostanay": 710,
+      "oskemen": 970
+    },
+    "karaganda": {
+      "almaty": 1000,
+      "astana": 215,
+      "karaganda": 25,
+      "shymkent": 1220,
+      "atyrau": 2010,
+      "pavlodar": 620,
+      "kostanay": 920,
+      "oskemen": 900
+    },
+    "shymkent": {
+      "almaty": 690,
+      "astana": 1500,
+      "karaganda": 1220,
+      "shymkent": 25,
+      "atyrau": 2050,
+      "pavlodar": 1730,
+      "kostanay": 2080,
+      "oskemen": 1490
+    },
+    "atyrau": {
+      "almaty": 2740,
+      "astana": 1840,
+      "karaganda": 2010,
+      "shymkent": 2050,
+      "atyrau": 25,
+      "pavlodar": 2230,
+      "kostanay": 1360,
+      "oskemen": 3050
+    },
+    "pavlodar": {
+      "almaty": 1450,
+      "astana": 440,
+      "karaganda": 620,
+      "shymkent": 1730,
+      "atyrau": 2230,
+      "pavlodar": 25,
+      "kostanay": 900,
+      "oskemen": 780
+    },
+    "kostanay": {
+      "almaty": 1900,
+      "astana": 710,
+      "karaganda": 920,
+      "shymkent": 2080,
+      "atyrau": 1360,
+      "pavlodar": 900,
+      "kostanay": 25,
+      "oskemen": 1580
+    },
+    "oskemen": {
+      "almaty": 1040,
+      "astana": 970,
+      "karaganda": 900,
+      "shymkent": 1490,
+      "atyrau": 3050,
+      "pavlodar": 780,
+      "kostanay": 1580,
+      "oskemen": 25
+    }
+  }
+}
