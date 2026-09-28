@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="FactoryDirect — demo B2B marketplace that connects buyers with manufacturers in Kazakhstan.">
+  <meta name="theme-color" content="#0b63f6">
+  <title>FactoryDirect — напрямую от производителя</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="design.css">
+</head>
+<body>
+<div class="demo-ribbon" data-i18n="demoDataNote">Данные и цены в прототипе демонстрационные.</div>
+  <a class="skip-link" href="#main" data-i18n="skip">Перейти к содержимому</a>
+
+  <header class="site-header">
+    <a class="logo" href="#top" aria-label="FactoryDirect"><span class="brand-mark">↗</span> Factory<span>Direct</span></a>
+
+    <button id="mobileMenuButton" class="mobile-menu-btn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Menu">☰</button>
+    <nav id="mainNav" class="main-nav" aria-label="Main navigation">
+      <a href="#catalog" data-i18n="navCatalog">Каталог</a>
+      <a href="#manufacturers" data-i18n="navManufacturers">Производители</a>
+      <a href="#mapSection" data-i18n="navMap">Карта</a>
+      <a href="#smartMatch" data-i18n="navSmart">Smart Match</a>
+      <a href="#calculator" data-i18n="navDelivery">Расчёт</a>
+    </nav>
+
+    <div class="header-actions">
+      <label class="sr-only" for="languageSelect" data-i18n="languageLabel">Язык</label>
+      <select id="languageSelect" class="compact-control" aria-label="Language">
+        <option value="ru">RU</option>
+        <option value="kk">KZ</option>
+        <option value="en">EN</option>
+      </select>
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему" title="Переключить тему">🌙</button>
+      <button class="cart-btn" type="button" data-open-cart>
+        <span aria-hidden="true">🛒</span>
+        <span class="cart-label" data-i18n="cart">Корзина</span>
+        <b id="cartCount">0</b>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="top" class="hero">
+      <div class="hero-copy reveal">
+        <div class="hero-badge"><span class="pulse-dot"></span><span data-i18n="heroBadge">B2B marketplace для Казахстана</span></div>
+        <h1><span data-i18n="heroTitle1">Покупай напрямую.</span><br><span class="gradient-text" data-i18n="heroTitle2">Сравнивай честно.</span></h1>
+        <p class="hero-text" data-i18n="heroText">FactoryDirect помогает бизнесу находить локальных производителей, сравнивать оптовые условия и считать доставку в одном месте.</p>
+
+        <form id="heroSearchForm" class="hero-search" role="search">
+          <span aria-hidden="true">⌕</span>
+          <input id="heroSearch" type="search" autocomplete="off" data-i18n-placeholder="heroSearchPlaceholder" placeholder="Например: кофе, футболки, вода…">
+          <button class="primary" type="submit" data-i18n="find">Найти</button>
+        </form>
+
+        <div class="hero-actions">
+          <a class="secondary" href="#smartMatch">✨ <span data-i18n="trySmart">Попробовать Smart Match</span></a>
+          <a class="ghost-link" href="#manufacturers"><span data-i18n="seeManufacturers">Смотреть производителей</span> →</a>
+        </div>
+
+        <div class="trust-row">
+          <span>✓ <span data-i18n="trust1">Проверенные профили в демо</span></span>
+          <span>✓ <span data-i18n="trust2">Оптовые уровни цены</span></span>
+          <span>✓ <span data-i18n="trust3">Расчёт логистики</span></span>
+        </div>
+      </div>
+
+      <div class="source-scene reveal delay-1">
+        <div class="scene-top"><span>FACTORYDIRECT / SOURCING</span><span>01 — 03</span></div>
+        <div class="scene-orbit"></div>
+        <img class="hero-pack" src="assets/coffee.svg" alt="" />
+        <div class="scene-label"><span data-i18n="sourceRoute">Путь товара</span><strong>Alatau Coffee</strong><small data-i18n="sceneCaption">Обжарка → ваш бизнес</small></div>
+        <div class="scene-stamp">FD<br><span>DIRECT</span></div>
+        <div class="scene-price"><span data-i18n="wholesalePrice">Оптовая цена</span><strong>5 850 <small>₸ / кг</small></strong><span data-i18n="sceneMinimum">Демо · от 30 кг · без доставки</span></div>
+        <button class="scene-button" type="button" data-jump-smart><span data-i18n="findBest">Найти лучшее предложение</span> ↗</button>
+      </div>
+    </section>
+
+    <section class="metrics section-narrow reveal" aria-label="Platform metrics">
+      <article><strong>12</strong><span data-i18n="metricManufacturers">производителей в демо</span></article>
+      <article><strong>8</strong><span data-i18n="metricRegions">городов и регионов</span></article>
+      <article><strong>3</strong><span data-i18n="metricLanguages">языка интерфейса</span></article>
+      <article><strong>1</strong><span data-i18n="metricFlow">единый B2B-процесс</span></article>
+    </section>
+
+    <section id="catalog" class="section reveal">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-i18n="catalogEyebrow">КАТАЛОГ</p>
+          <h2 data-i18n="catalogTitle">Товары напрямую от производителей</h2>
+          <p class="section-subtitle" data-i18n="catalogSubtitle">Цена автоматически меняется в зависимости от объёма заказа — как в настоящем B2B.</p>
+        </div>
+        <div class="catalog-tools">
+          <div class="search-field"><span>⌕</span><input id="catalogSearch" type="search" autocomplete="off" data-i18n-placeholder="catalogSearchPlaceholder" placeholder="Поиск товара или производителя"></div>
+          <select id="categoryFilter" class="control" aria-label="Category"></select>
+          <select id="sortFilter" class="control" aria-label="Sort"></select>
+        </div>
+      </div>
+      <div class="discovery-bar"><div class="category-pills" id="categoryPills"></div><button id="favoritesOnly" class="secondary" type="button" aria-pressed="false"><span data-i18n="savedOnly">♡ Избранное</span> <b id="savedCount">0</b></button></div>
+      <div class="catalog-status"><span id="resultCount" aria-live="polite"></span><span data-i18n="catalogStatus">Демо-каталог · цены в тенге</span></div>
+      <div id="productGrid" class="product-grid"></div>
+      <div id="catalogEmpty" class="empty-state hidden">
+        <div>🔎</div><h3 data-i18n="nothingFound">Ничего не найдено</h3><p data-i18n="nothingFoundText">Измени запрос или выбери другую категорию.</p>
+      </div>
+    </section>
+
+    <section id="manufacturers" class="section alt-section reveal">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-i18n="manufacturersEyebrow">ПРОИЗВОДИТЕЛИ</p>
+          <h2 data-i18n="manufacturersTitle">Знай, у кого покупаешь</h2>
+          <p class="section-subtitle" data-i18n="manufacturersSubtitle">Профиль поставщика показывает город, категории, минимальный заказ, рейтинг и скорость отгрузки.</p>
+        </div>
+        <button id="showAllManufacturers" class="secondary" type="button" data-i18n="showAll">Показать всех</button>
+      </div>
+      <div id="manufacturerGrid" class="manufacturer-grid"></div>
+    </section>
+
+    <section id="mapSection" class="section map-section reveal">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-i18n="mapEyebrow">ГЕОГРАФИЯ</p>
+          <h2 data-i18n="mapTitle">Производители на карте Казахстана</h2>
+          <p class="section-subtitle" data-i18n="mapSubtitle">Нажми на точку, чтобы увидеть поставщика и его категорию. Координаты в демо привязаны к городам, а не к точным адресам.</p>
+        </div>
+        <div class="map-legend"><span><i class="legend-dot"></i><span data-i18n="mapLegend">демо-производитель</span></span></div>
+      </div>
+      <div class="map-shell">
+        <div id="map" aria-label="Map of manufacturers"></div>
+        <aside class="map-sidecard">
+          <span class="mini-label" data-i18n="coverage">ПОКРЫТИЕ</span>
+          <h3 data-i18n="coverageTitle">8 ключевых городов</h3>
+          <p data-i18n="coverageText">Алматы, Астана, Караганда, Шымкент, Атырау, Павлодар, Костанай и Усть-Каменогорск.</p>
+          <div id="cityChips" class="city-chips"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="smartMatch" class="section smart-section reveal">
+      <div class="smart-intro">
+        <p class="eyebrow" data-i18n="smartEyebrow">SMART MATCH</p>
+        <h2 data-i18n="smartTitle">Подбери поставщика под задачу, а не просто по цене</h2>
+        <p data-i18n="smartSubtitle">Демо-алгоритм учитывает оптовую цену, минимальный заказ, расстояние, рейтинг и скорость отгрузки. Это локальный прототип без внешнего AI API.</p>
+        <div class="feature-list">
+          <span>⚡ <span data-i18n="smartFeature1">мгновенный скоринг</span></span>
+          <span>🚚 <span data-i18n="smartFeature2">учёт доставки</span></span>
+          <span>🏷️ <span data-i18n="smartFeature3">оптовые скидки</span></span>
+        </div>
+      </div>
+
+      <div class="smart-card">
+        <div class="smart-query">
+          <label for="smartText" data-i18n="smartQueryLabel">Опиши закупку обычным текстом</label>
+          <div class="smart-input-row">
+            <textarea id="smartText" rows="3" data-i18n-placeholder="smartPlaceholder" placeholder="Например: нужно 30 кг кофе в Алматы, важнее цена"></textarea>
+            <button id="parseSmartText" class="secondary square" type="button" title="Parse">✨</button>
+          </div>
+          <small data-i18n="smartHint">Можно написать товар, количество, город и приоритет — мы попробуем заполнить поля автоматически.</small>
+        </div>
+
+        <div class="smart-fields">
+          <label><span data-i18n="product">Товар</span><select id="smartProduct" class="control"></select></label>
+          <label><span data-i18n="quantity">Количество</span><input id="smartQty" class="control" type="number" min="1" value="30"></label>
+          <label><span data-i18n="destination">Город доставки</span><select id="smartCity" class="control"></select></label>
+          <label><span data-i18n="priority">Приоритет</span><select id="smartPriority" class="control"></select></label>
+        </div>
+        <button id="runSmartMatch" class="primary full smart-run" type="button">✨ <span data-i18n="runSmart">Подобрать лучшие предложения</span></button>
+        <div id="smartResult" class="smart-result"></div>
+      </div>
+    </section>
+
+    <section id="compare" class="section reveal">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-i18n="compareEyebrow">СРАВНЕНИЕ</p>
+          <h2 data-i18n="compareTitle">Сравни поставщиков в одной таблице</h2>
+          <p class="section-subtitle" data-i18n="compareSubtitle">Выбери товар и город — таблица пересчитает итоговую стоимость закупки с доставкой.</p>
+        </div>
+        <div class="compare-controls">
+          <select id="compareProduct" class="control"></select>
+          <select id="compareCity" class="control"></select>
+          <input id="compareQty" class="control qty-control" type="number" min="1" value="30" aria-label="Quantity">
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="compare-table">
+          <thead id="compareHead"></thead>
+          <tbody id="compareBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="calculator" class="section alt-section reveal">
+      <div class="calculator-layout">
+        <div>
+          <p class="eyebrow" data-i18n="calculatorEyebrow">КАЛЬКУЛЯТОР</p>
+          <h2 data-i18n="calculatorTitle">Посчитай закупку до оформления заказа</h2>
+          <p class="section-subtitle" data-i18n="calculatorSubtitle">Увидишь цену товара, объёмную скидку, доставку, ориентировочный срок и сравнение с розницей.</p>
+
+          <div class="calc-form">
+            <label><span data-i18n="product">Товар</span><select id="calcProduct" class="control"></select></label>
+            <label><span data-i18n="supplier">Поставщик</span><select id="calcSupplier" class="control"></select></label>
+            <label><span data-i18n="quantity">Количество</span><input id="calcQty" class="control" type="number" min="1" value="50"></label>
+            <label><span data-i18n="destination">Город доставки</span><select id="calcCity" class="control"></select></label>
+            <label><span data-i18n="deliveryMode">Способ доставки</span><select id="deliveryMode" class="control"></select></label>
+          </div>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-head"><span data-i18n="estimate">ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ</span><span id="quoteBadge">B2B</span></div>
+          <div class="quote-main"><small data-i18n="totalOrder">Итог заказа</small><strong id="calcTotal">0 ₸</strong><span id="calcUnitPrice">0 ₸ / ед.</span></div>
+          <div class="quote-lines">
+            <div><span data-i18n="goodsSubtotal">Товар</span><strong id="calcGoods">0 ₸</strong></div>
+            <div><span data-i18n="volumeDiscount">Оптовая скидка</span><strong id="calcDiscount">0 ₸</strong></div>
+            <div><span data-i18n="delivery">Доставка</span><strong id="calcDelivery">0 ₸</strong></div>
+            <div><span data-i18n="eta">Срок</span><strong id="calcEta">—</strong></div>
+          </div>
+          <div class="quote-saving"><span data-i18n="vsRetail">Экономия против ориентировочной розницы</span><strong id="calcSaving">0 ₸</strong></div>
+          <button id="addCalculatedToCart" class="primary full" type="button" data-i18n="addCalculated">Добавить расчёт в корзину</button>
+          <small data-i18n="calcDisclaimer">Расчёт демонстрационный и не является публичной офертой.</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="section workflow reveal">
+      <div class="section-head compact-head">
+        <div><p class="eyebrow" data-i18n="workflowEyebrow">СЦЕНАРИЙ</p><h2 data-i18n="workflowTitle">Один понятный путь от поиска до заказа</h2></div>
+      </div>
+      <div class="steps">
+        <article><span>01</span><div>⌕</div><h3 data-i18n="step1Title">Найди товар</h3><p data-i18n="step1Text">Каталог и фильтры помогают быстро сузить выбор.</p></article>
+        <article><span>02</span><div>✨</div><h3 data-i18n="step2Title">Получи Smart Match</h3><p data-i18n="step2Text">Система ранжирует поставщиков по твоему приоритету.</p></article>
+        <article><span>03</span><div>⇄</div><h3 data-i18n="step3Title">Сравни итог</h3><p data-i18n="step3Text">Цена товара и логистика видны до оформления.</p></article>
+        <article><span>04</span><div>📦</div><h3 data-i18n="step4Title">Отправь запрос</h3><p data-i18n="step4Text">Корзина собирает закупку и формирует демо-заявку.</p></article>
+      </div>
+    </section>
+
+    <section class="final-cta reveal">
+      <div>
+        <span class="mini-label">FACTORYDIRECT · HACKATHON MVP</span>
+        <h2 data-i18n="finalTitle">Локальные производители ближе, чем кажется.</h2>
+        <p data-i18n="finalText">Следующий этап — реальные кабинеты поставщиков, остатки, документы, безопасная сделка и интеграция с логистическими сервисами.</p>
+      </div>
+      <a href="#smartMatch" class="primary"><span data-i18n="trySmart">Попробовать Smart Match</span> →</a>
+    </section>
+  </main>
+
+  <footer>
+    <div><div class="footer-logo">Factory<span>Direct</span></div><p data-i18n="footerPitch">B2B marketplace prototype · Kazakhstan · 2026</p></div>
+    <div class="footer-links"><a href="#catalog" data-i18n="navCatalog">Каталог</a><a href="#manufacturers" data-i18n="navManufacturers">Производители</a><a href="#smartMatch">Smart Match</a></div>
+    <div class="footer-note"><strong data-i18n="demoProject">Демонстрационный проект</strong><span data-i18n="demoProjectText">Названия поставщиков, цены и рейтинги используются для демонстрации интерфейса.</span></div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="productModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+    <div class="modal-box product-modal-box">
+      <button class="modal-close" type="button" data-close-product aria-label="Close">×</button>
+      <div id="productModalContent"></div>
+    </div>
+  </div>
+
+  <div id="manufacturerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="manufacturerModalTitle">
+    <div class="modal-box manufacturer-modal-box">
+      <button class="modal-close" type="button" data-close-manufacturer aria-label="Close">×</button>
+      <div id="manufacturerModalContent"></div>
+    </div>
+  </div>
+
+  <div id="cartModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+    <div class="modal-box cart-modal-box">
+      <button class="modal-close" type="button" data-close-cart aria-label="Close">×</button>
+      <div class="cart-title-row">
+        <div><p class="eyebrow" data-i18n="yourOrder">ВАША ЗАКУПКА</p><h2 id="cartTitle" data-i18n="cart">Корзина</h2></div>
+        <span id="cartItemsCount" class="counter-pill">0</span>
+      </div>
+      <button type="button" class="secondary export-button" id="exportCart" data-i18n="exportQuote">↓ Скачать расчёт CSV</button>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-total"><span data-i18n="total">Итого</span><strong id="cartTotal">0 ₸</strong></div>
+      <button id="checkoutButton" class="primary full" type="button" data-i18n="sendRequest">Отправить демо-заявку</button>
+      <p class="modal-note" data-i18n="checkoutNote">Оплата не проводится — это прототип для демонстрации.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="features.js"></script>
+</body>
+</html>
