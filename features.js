@@ -14,7 +14,7 @@ renderProducts=function(){
  let rows=PRODUCTS.filter(p=>(cat==='all'||p.category===cat)&&(!onlyFavorites||favorites.includes(p.id))&&`${Object.values(p.name).join(' ')} ${p.offers.map(o=>makerById(o.maker).name).join(' ')}`.toLowerCase().includes(q)).map(p=>({p,best:bestOfferForProduct(p)}));
  if(sort==='price')rows.sort((a,b)=>a.best.unitPrice-b.best.unitPrice);
  if(sort==='saving')rows.sort((a,b)=>(b.p.retail-b.best.unitPrice)-(a.p.retail-a.best.unitPrice));
- $('#productGrid').innerHTML=rows.map(({p,best})=>{const min=Math.max(best.maker.minOrder,best.offer.tiers[0][0]);return `<article class="product-card"><div class="product-visual art-${p.id}"><span class="product-badge">${t(p.category)}</span><button class="favorite-btn ${favorites.includes(p.id)?'is-saved':''}" onclick="toggleFavorite('${p.id}')" aria-label="${favorites.includes(p.id)?t('saved'):t('save')}" aria-pressed="${favorites.includes(p.id)}">${favorites.includes(p.id)?'♥':'♡'}</button><img src="assets/${p.id}.svg" alt="" loading="lazy"></div><div class="product-body"><div class="product-meta"><span>${escapeHtml(cityName(best.maker.city))}</span><span>${p.offers.length} ${t('offersLabel')}</span></div><h3>${escapeHtml(p.name[lang])}</h3><button class="source-link" onclick="openSource('${p.id}')">${escapeHtml(best.maker.name)} ↗</button><div class="product-price"><strong>${formatPrice(best.unitPrice)}</strong><span>/ ${escapeHtml(p.unit[lang])}</span></div><div class="product-tier">${t('minimum')}: ${min} · ${t('deliveryExtra')}</div><div class="product-actions"><button class="primary" onclick="quickAdd('${p.id}')">+ ${t('add')}</button><button class="details-btn" onclick="openProduct('${p.id}')" aria-label="${t('details')}">↗</button></div><button class="source-bottom" onclick="openSource('${p.id}')">${t('sourceAction')} <span>→</span></button></div></article>`}).join('');
+ $('#productGrid').innerHTML=rows.map(({p,best})=>{const min=Math.max(best.maker.minOrder,best.offer.tiers[0][0]);return `<article class="product-card"><div class="product-visual art-${p.id}"><span class="product-badge">${t(p.category)}</span><button class="favorite-btn ${favorites.includes(p.id)?'is-saved':''}" onclick="toggleFavorite('${p.id}')" aria-label="${favorites.includes(p.id)?t('saved'):t('save')}" aria-pressed="${favorites.includes(p.id)}">${favorites.includes(p.id)?'♥':'♡'}</button><img src="assets/${p.illustration||p.id}.svg" alt="" loading="lazy"></div><div class="product-body"><div class="product-meta"><span>${escapeHtml(cityName(best.maker.city))}</span><span>${p.offers.length} ${t('offersLabel')}</span></div><h3>${escapeHtml(p.name[lang])}</h3><button class="source-link" onclick="openSource('${p.id}')">${escapeHtml(best.maker.name)} ↗</button><div class="product-price"><strong>${formatPrice(best.unitPrice)}</strong><span>/ ${escapeHtml(p.unit[lang])}</span></div><div class="product-tier">${t('minimum')}: ${min} · ${t('deliveryExtra')}</div><div class="product-actions"><button class="primary" onclick="quickAdd('${p.id}')">+ ${t('add')}</button><button class="details-btn" onclick="openProduct('${p.id}')" aria-label="${t('details')}">↗</button></div><button class="source-bottom" onclick="openSource('${p.id}')">${t('sourceAction')} <span>→</span></button></div></article>`}).join('');
  $('#catalogEmpty').classList.toggle('hidden',rows.length>0);
  $('#resultCount').textContent=`${t('found')}: ${rows.length} / ${PRODUCTS.length}`;
  $('#savedCount').textContent=favorites.length;
@@ -35,3 +35,17 @@ const baseOpenModal=openModal,baseCloseModal=closeModal;let lastFocus=null;
 openModal=function(id){if(!$('.modal:not(.hidden)'))lastFocus=document.activeElement;baseOpenModal(id);};
 closeModal=function(id){baseCloseModal(id);if(!$('.modal:not(.hidden)'))lastFocus?.focus();};
 window.closeModal=closeModal;
+
+// Display self-declared company role without implying verification.
+const baseOpenManufacturer=openManufacturer;
+openManufacturer=function(id){
+ baseOpenManufacturer(id);
+ const m=makerById(id);if(!m?.role)return;
+ const roles={ru:{manufacturer:'Производитель',distributor:'Дистрибьютор',seller:'Продавец'},kk:{manufacturer:'Өндіруші',distributor:'Дистрибьютор',seller:'Сатушы'},en:{manufacturer:'Manufacturer',distributor:'Distributor',seller:'Seller'}};
+ const box=document.createElement('div');box.className='source-warning';
+ const role=document.createElement('p');role.textContent=roles[lang][m.role]||m.role;box.append(role);
+ if(m.sourceUrl){try{const url=new URL(m.sourceUrl);if(['http:','https:'].includes(url.protocol)){const link=document.createElement('a');link.href=url.href;link.textContent=url.hostname+' ↗';link.target='_blank';link.rel='noopener noreferrer';box.append(link);}}catch{}}
+ const status=document.createElement('p');status.textContent=t('sourceUnknown');box.append(status);
+ document.querySelector('#manufacturerModalContent').append(box);
+};
+window.openManufacturer=openManufacturer;

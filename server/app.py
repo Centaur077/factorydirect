@@ -7,6 +7,9 @@ import os
 from pathlib import Path
 import sqlite3
 import uuid
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+import accounts
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit, parse_qs
 
@@ -43,6 +46,7 @@ def initialize():
           request_id TEXT REFERENCES requests(id), position INTEGER,
           snapshot TEXT NOT NULL, PRIMARY KEY(request_id,position));
         ''')
+        accounts.migrate(db)
         # Seed only a new database; never overwrite edited catalog records on restart.
         if not db.execute('SELECT 1 FROM products LIMIT 1').fetchone():
             for m in SEED['manufacturers']:
@@ -148,12 +152,19 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Content-Type','application/json; charset=utf-8')
         self.send_header('Content-Length',str(len(raw)))
         self.send_header('Cache-Control','no-store')
+        if getattr(self,'cookie',None):
+            self.send_header('Set-Cookie',self.cookie)
+            self.cookie=None
         self.send_header('X-Content-Type-Options','nosniff')
         self.end_headers()
         self.wfile.write(raw)
 
     def do_GET(self):
         path=urlsplit(self.path).path
+        if path=='/api/seller/me':
+            with connect() as db:
+                user=accounts.authenticate(db,self.headers.get('Cookie'))
+                return self.reply(200,accounts.dashboard(db,user)) if user else self.reply(401,{'error':'Войдите в кабинет.'})
         if path=='/api/health': return self.reply(200,dict(status='ok',storage='sqlite'))
         if path in ('/api/catalog','/api/products','/api/manufacturers'):
             data=catalog()
@@ -167,7 +178,7 @@ class Handler(BaseHTTPRequestHandler):
             return self.reply(200,data)
         # Explicit public-file allowlist: never serve the database, server or .git.
         file=ROOT / ('index.html' if path=='/' else path.lstrip('/'))
-        allowed=path in ('/','/index.html','/style.css','/design.css','/script.js','/features.js','/api-client.js')
+        allowed=path in ('/','/index.html','/style.css','/design.css','/script.js','/features.js','/api-client.js','/seller.html','/seller.js','/seller.css')
         allowed=allowed or (path.startswith('/assets/') and file.suffix=='.svg' and file.resolve().parent==ROOT/'assets')
         if not allowed or not file.is_file(): return self.reply(404,{'error':'Not found'})
         mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml'}
@@ -180,7 +191,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(raw)
 
     def do_POST(self):
-        if self.path not in ('/api/quote','/api/requests'): return self.reply(404,{'error':'Not found'})
+        if self.path not in ('/api/quote','/api/requests','/api/auth/register','/api/auth/login','/api/auth/logout','/api/seller/profile','/api/seller/products','/api/seller/status'): return self.reply(404,{'error':'Not found'})
         origin=self.headers.get('Origin')
         if origin and origin not in ('http://'+self.headers.get('Host',''),'https://'+self.headers.get('Host','')):
             return self.reply(403,{'error':'Origin not allowed'})
@@ -191,10 +202,30 @@ class Handler(BaseHTTPRequestHandler):
             if not 0<length<=65536: return self.reply(413,{'error':'Body too large or empty'})
             body=json.loads(self.rfile.read(length))
             if not isinstance(body,dict): raise ValueError('Ожидается JSON-объект.')
+            if self.path.startswith('/api/auth/') or self.path.startswith('/api/seller/'):
+                with connect() as db:
+                    if self.path in ('/api/auth/register','/api/auth/login'):
+                        token=accounts.login(db,body,self.path.endswith('register'),SEED['cities'])
+                        self.cookie='fd_session='+token+'; HttpOnly; SameSite=Strict; Path=/; Max-Age=86400'
+                        db.commit()
+                        return self.reply(200,{'ok':True})
+                    user=accounts.authenticate(db,self.headers.get('Cookie'))
+                    if not user:return self.reply(401,{'error':'Войдите в кабинет.'})
+                    if self.path=='/api/auth/logout':
+                        jar=accounts.SimpleCookie();jar.load(self.headers.get('Cookie',''))
+                        db.execute('DELETE FROM sessions WHERE token_hash=?',(hashlib.sha256(jar['fd_session'].value.encode()).hexdigest(),))
+                        self.cookie='fd_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'
+                        db.commit()
+                        return self.reply(200,{'ok':True})
+                    result=accounts.mutate(db,user,self.path,body,SEED['cities'])
+                    db.commit()
+                    return self.reply(200,result)
             result=quote(body.get('items')) if self.path=='/api/quote' else create_request(body)
             self.reply(200 if self.path=='/api/quote' else 201,result)
         except (ValueError,TypeError,UnicodeDecodeError) as error:
             self.reply(400,{'error':str(error)})
+        except PermissionError as error:
+            self.reply(403,{'error':str(error)})
         except sqlite3.Error:
             self.reply(503,{'error':'База временно недоступна. Повторите попытку.'})
 
