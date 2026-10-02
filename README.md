@@ -1,128 +1,150 @@
-# FactoryDirect
+# FactoryDirect — Hackathon MVP
 
-Молодёжный хакатон Admit · Казахстан · 2026
+B2B marketplace prototype for connecting buyers directly with manufacturers in Kazakhstan: a Django backend with an admin panel and PostgreSQL, and a vanilla JS single-page frontend.
 
-FactoryDirect — прототип сервиса поиска предложений напрямую от производителей. Покупатель выбирает товар, изучает доступные сведения об источнике и сравнивает стоимость с доставкой.
+## Закупки для покупателей и компаний
 
-## Запуск с базой данных
+Откройте `/business.html` (кнопка «Закупки») после входа через `/#/login`. Покупатель создаёт запрос, компания предлагает цену и доставку, покупатель сравнивает ответы и выбирает предложение. Есть роли сотрудников, избранные компании, повтор закупки и внутренние уведомления. Платежи не подключены. Подробности и ограничения: [BUSINESS_UPDATE.md](BUSINESS_UPDATE.md).
 
-Нужен Python 3.9 или новее. Сторонние пакеты не требуются.
+Графитовый дизайн с янтарными акцентами: [DESIGN_UPDATE.md](DESIGN_UPDATE.md).
 
-```sh
-python3 server/app.py
+## Pages
+
+The frontend is a single-page app with hash routes (no build step). It loads all catalog data from the backend API:
+
+| Route | Page |
+|---|---|
+| `#/` | Landing: hero, best offer, popular products, top manufacturers |
+| `#/catalog?q=&cat=&sort=` | Catalog with search, category filter and sorting (filters are kept in the URL) |
+| `#/product/<id>` | Product: price tiers, supplier comparison and order calculator |
+| `#/manufacturers` | All manufacturers and the 2GIS map |
+| `#/manufacturer/<id>` | Manufacturer profile and products |
+| `#/smart-match?product=&qty=&city=&priority=` | Smart Match supplier ranking |
+| `#/cart` | Cart → company details → request summary |
+
+Old one-page links (`#catalog`, `#product=coffee`, `#maker=alatau`) redirect to the new routes.
+
+## What is included
+
+- RU / KZ / EN interface
+- Light / dark theme with saved preference
+- Responsive catalog with categories, search, sorting and wholesale price tiers
+- Manufacturer profiles with MOQ, rating, dispatch time and product categories
+- Interactive 2GIS map (MapGL) with manufacturer markers; falls back to a self-contained schematic map when no key is set
+- **Smart Match** demo engine that ranks suppliers by landed price, delivery speed, rating or a balanced score
+- Plain-language helper that tries to parse product, quantity, city and priority from a purchase request
+- Supplier comparison table
+- B2B quote / logistics calculator with volume discounts, delivery modes and estimated ETA
+- Persistent cart stored in `localStorage`, with goods / delivery breakdown per line
+- Checkout step with company details (name, optional 12-digit BIN, contact) and a request summary grouped by manufacturer
+- Buyer delivery city selected once in the hero and reused across Smart Match, comparison, calculator and quick add
+- Minimum-order transparency: suppliers below MOQ are shown with a one-click "quote for MOQ" action
+- Shareable links for every page, product and manufacturer (`#/product/coffee`, `#/manufacturer/alatau`)
+- Mobile navigation and accessibility improvements (focus moves to the page heading on navigation, skip link)
+
+## Important demo note
+
+All supplier names, prices, ratings, quantities and logistics values in this repository are illustrative hackathon data. They are not live market offers and are not a public offer.
+
+## Run with Docker (recommended)
+
+Only [Docker](https://www.docker.com/products/docker-desktop/) is needed.
+
+```bash
+cp .env.example .env        # set DJANGO_SECRET_KEY and DJANGO_SUPERUSER_PASSWORD
+docker compose up --build
 ```
 
-Откройте http://127.0.0.1:8001. Вверху появится «База подключена».
-SQLite автоматически создаётся в `data/factorydirect.sqlite3`. При перезапуске данные сохраняются. Путь можно переопределить переменной `FACTORYDIRECT_DB`.
+- Site: http://localhost:8000
+- Admin: http://localhost:8000/admin/ (login `admin`, password from `.env`)
 
-Открытие `index.html` напрямую и GitHub Pages оставляют сайт в режиме демонстрации: каталог доступен, заявки не сохраняются. GitHub Pages не запускает Python. Текущий сервер слушает только локальный компьютер; для друзей нужен отдельный хостинг бэкенда.
+On the first start the container applies migrations, loads the demo catalog and creates the admin user. Data lives in the `pgdata` Docker volume, so admin edits and orders survive restarts; `docker compose down -v` deletes them. Use `WEB_PORT=8080 docker compose up` if port 8000 is busy.
 
-## Бэкенд и API
+## Run locally without Docker
 
-- `GET /api/health` — состояние сервера.
-- `GET /api/catalog` — каталог из SQLite.
-- `GET /api/products?q=coffee&category=food` — поиск и фильтрация.
-- `GET /api/manufacturers` — производители и статус источника.
-- `POST /api/quote` — серверный расчёт `{ "items": [...] }`.
-- `POST /api/requests` — сохранение `{ "contact": "demo@example.com", "requestKey": "unique-key-16-or-more", "items": [...] }`.
+Requirements: [uv](https://docs.astral.sh/uv/) and PostgreSQL 14+.
 
-Позиция: `{ "productId": "coffee", "makerId": "alatau", "qty": 30, "destination": "almaty", "mode": "standard" }`.
-Способы доставки: `standard`, `express`, `pickup`.
-
-Сервер проверяет предложение, целое количество и минимальную партию, пересчитывает стоимость из базы. Клиентские цены не принимаются. Повтор с тем же ключом и содержимым возвращает существующую заявку. Изменённое содержимое с прежним ключом отклоняется. Номер и итог выводятся в корзине.
-
-Таблицы: `manufacturers`, `products`, `offers`, `requests`, `request_items`. В заявке сохраняется снимок условий. Контакты не выдаются через публичный API. База, служебные файлы и `.git` не доступны через веб-сервер и исключены из Git.
-
-Это локальный MVP: кабинет и авторизация реализованы; уведомлений, восстановления пароля, подтверждения email и защиты от массовых запросов пока нет. Перед публичным развёртыванием нужны production-сервер, HTTPS, ограничения запросов, авторизация административных функций и резервное копирование. Не открывайте этот локальный сервер напрямую в интернет.
-
-## Проверки
-
-```sh
-python3 -m unittest discover -s tests -v
+```bash
+cp .env.example .env            # then set DJANGO_SECRET_KEY and DJANGO_SUPERUSER_PASSWORD
+createdb factorydirect
+uv sync
+uv run python backend/manage.py migrate
+uv run python backend/manage.py seed_demo                  # demo cities, manufacturers, products, prices
+uv run python backend/manage.py createsuperuser --noinput  # admin user from .env
+uv run python backend/manage.py runserver
 ```
 
-Семь тестов: начальные данные, серверные цены, доставка, неверные количества, неизвестные предложения, сохранение и повтор заявки, откат неверной заявки.
+- Site: http://localhost:8000
+- Admin: http://localhost:8000/admin/ (login and password are in `.env`)
+- Tests: `uv run python backend/manage.py test marketplace`
 
-## Возможности
+`seed_demo` can be re-run at any time; it resets the demo catalog to its original values but keeps orders.
 
-- Новый адаптивный интерфейс: молочный фон, зелёная палитра, локальные SVG-иллюстрации.
-- Каталог: поиск на трёх языках, категории, сортировка, количество найденных товаров.
-- Избранное с сохранением в браузере и фильтром.
-- Паспорт источника: схема цепочки, предложения и список документов для проверки.
-- Сравнение предложений с учётом минимальной партии и доставки.
-- Smart Match: локальный алгоритм подбора по цене, срокам и рейтингу.
-- Калькулятор партии, объёмных скидок, доставки и самовывоза.
-- Корзина с сохранением и экспортом расчёта в CSV (UTF-8 BOM, разделитель `;`).
-- Профили, схематичная карта, RU / KZ / EN, светлая и тёмная темы.
-- Клавиатурное управление диалогами и возврат фокуса.
+## Admin
 
-## Ограничения MVP
+Everything shown on the site is edited in the admin and appears on the site after a page reload:
 
-Учебный каталог содержит демонстрационные организации, цены, рейтинги и маршруты. Раздел «Источники» содержит сведения с реальных сайтов компаний, а новые товары кабинета — данные, введённые пользователями. Проект не ищет поставщиков в интернете и не подтверждает происхождение товара. Заявки сохраняются локально, но не отправляются производителям. Паспорт источника явно показывает отсутствие подтверждающих документов. Чекбоксы проверки служат временной памяткой и не являются верификацией. Экономия сравнивается с учебной розничной ценой. Доставка рассчитывается по условной формуле.
+- **Товары** — names (RU/KZ/EN), description, retail price, category, icon, visibility; supplier offers are listed inside each product.
+- **Предложения (цены)** — which manufacturer sells which product, base price and volume price tiers.
+- **Производители** — city, rating, minimum order, dispatch time, categories, description, visibility.
+- **Города** — names and coordinates for the 2GIS map, plus distances used for delivery.
+- **Категории** and **Тарифы доставки** (city delivery, per-km rate, express multiplier, ETA).
+- **Заявки** — requests created from the site cart with company details, items and totals; the status is editable in the list.
 
-Данные корзины и избранного хранятся только в этом браузере. Сервер и сохранение заявок реализованы; регистрация производителей реализована; оплата и внешние интеграции отсутствуют. Для реальной работы нужны подключённый каталог, проверка компаний и документы о происхождении товаров.
+Orders are priced on the server from the database, never from numbers sent by the browser.
 
-## Демонстрация за две минуты
+## API
 
-1. Найдите «кофе» и сохраните товар в избранное.
-2. Откройте паспорт источника: покажите цепочку и что ещё нужно подтвердить.
-3. В Smart Match выберите кофе, 30 кг, Алматы.
-4. Сравните предложения и стоимость доставки.
-5. Рассчитайте закупку, добавьте её в корзину, скачайте CSV.
-6. Покажите мобильную версию и переключение языка.
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/catalog/` | Cities, distances, categories, manufacturers, products with offers and tiers, delivery tariffs |
+| `GET /api/orders/` | The signed-in buyer's orders with items and status |
+| `POST /api/orders/` | Creates an order from the cart (sign-in required) and returns its number and totals |
+| `GET /api/auth/me/` | Current buyer (or `null`); also sets the CSRF cookie |
+| `POST /api/auth/register/`, `/login/`, `/logout/`, `/profile/` | Buyer registration, sign-in, sign-out, company details |
 
-## Структура
+## Buyer accounts
 
-- `index.html` — страницы и диалоги.
-- `style.css` — базовые стили исходного прототипа.
-- `design.css` — новый дизайн и адаптивные стили.
-- `script.js` — демо-каталог, расчёты, карта, переводы.
-- `features.js` — избранное, новый каталог, паспорт источника, CSV.
-- `server/app.py` — API и SQLite.
-- `server/seed.json` — исходный учебный каталог.
-- `api-client.js` — подключение интерфейса к API.
-- `tests/test_api.py` — проверки бэкенда.
-- `assets/` — локальные SVG-иллюстрации, без внешних зависимостей.
+- Buyers sign up with e-mail and password (`#/login`) and see their company details and requests with status in `#/account`.
+- Placing a request requires signing in; the checkout form is prefilled from the company profile.
+- Sessions use Django's HttpOnly session cookie; every changing request carries the CSRF token.
+- After 5 wrong passwords, sign-in for that e-mail is locked for 15 minutes.
+- In the admin, **Пользователи** shows each buyer's company and requests; request status changes are visible to the buyer.
 
-## GitHub Pages
+## 2GIS map key
 
-Settings → Pages → Deploy from a branch → `main` → `/ (root)`.
-Сборка не требуется; `.nojekyll` включён.
+1. Get a free key at https://platform.2gis.ru (MapGL JS API).
+2. Paste it into `GIS_KEY` in `frontend/script.js`.
+3. In the 2GIS platform, restrict the key to your domains (`localhost` and your GitHub Pages domain) — the key is visible in client-side code by design.
 
+Without a key the site shows the built-in schematic map.
 
-## Кабинет производителя
+## Deployment
 
-После запуска сервера откройте http://127.0.0.1:8001/seller.html или ссылку «Кабинет» в каталоге.
+GitHub Pages can only host static files, and the site now needs the Django backend for its data, so it has to run on a server with Python and PostgreSQL (for example Render, Railway or a VPS). For production set `DJANGO_DEBUG=0`, a real `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS` and `DATABASE_URL`, and run `uv run python backend/manage.py collectstatic`.
 
-1. Создайте аккаунт: email, пароль минимум 10 символов, название, город и роль компании.
-2. Заполните описание и официальный сайт. Эти сведения заявлены владельцем и не считаются проверенными.
-3. Добавьте название товара, категорию, единицу, цену и минимальную партию.
-4. Откройте каталог, найдите товар и сохраните заявку с учебным контактом.
-5. Вернитесь в кабинет, нажмите «Обновить» и измените статус заявки.
+## Project structure
 
-В кабинете отображаются только товары и позиции заявок, принадлежащие текущему производителю. У разных производителей одной заявки отдельные статусы. Пароли хешируются PBKDF2-SHA256 с индивидуальной солью и 600000 итераций. Сессия на сутки хранится в HttpOnly / SameSite=Strict cookie, в базе сохраняется хеш токена. Выход аннулирует текущую сессию. Для публичного HTTPS-развёртывания необходимо добавить Secure к cookie, ограничение попыток входа, подтверждение email и восстановление доступа.
+```text
+factorydirect/
+├── frontend/              # index.html, script.js, style.css, favicon.svg (served at / by Django + WhiteNoise)
+├── backend/
+│   ├── manage.py
+│   ├── config/            # settings, urls
+│   └── marketplace/       # models, admin, api.py, pricing.py, tests, seed_demo command, demo fixture
+├── pyproject.toml         # Python dependencies (uv)
+└── .env.example
+```
 
-Новые описания отображаются одинаково на трёх языках — автоматического перевода нет. Иллюстрация нового товара пока общая. Срок отгрузки новых компаний фиксирован (2 дня); доставка остаётся учебной оценкой. Редактирование и удаление товаров пока не реализованы.
+## Demo flow for judges
 
-API кабинета: `POST /api/auth/register`, `/api/auth/login`, `/api/auth/logout`; `GET /api/seller/me`; `POST /api/seller/profile`, `/api/seller/products`, `/api/seller/status`. Доступ определяется серверной сессией, переданный клиентом идентификатор производителя не даёт прав на чужие записи.
+1. Switch RU → KZ → EN and toggle dark mode.
+2. Search for **Coffee** on the landing page — you land on the catalog with the query in the URL.
+3. Open the product page: show price tiers, the supplier comparison and the calculator (Standard → Express changes delivery / ETA).
+4. Open **Smart Match** and use: `нужно 30 кг кофе в Алматы, важнее цена`.
+5. Open **Manufacturers**, click a city on the 2GIS map and open a manufacturer profile.
+6. Add the quote to the cart, fill in company details and create the demo purchase request.
 
-Дополнительные таблицы: `accounts`, `sessions`, `maker_request_status`. Миграция сохраняет существующий каталог и заявки.
+## Technical note
 
-
-## Источники упаковки
-
-Раздел «Источники» содержит 6 позиций от 5 компаний по состоянию на 28.09.2026: KPU, Классика / Kprint, Алматы Картон, QAZAQ-PAK и KazDi Group. Перечень основан на просмотренных страницах компаний, не на их регистрации в сервисе или независимой проверке производства.
-
-Для каждой позиции сохраняются ссылки на товар и заявление о производстве, дата просмотра, опубликованная нижняя граница цены или `null`, минимальная партия или `null`, ограничения и уровень проверки `website_reviewed`. `legalVerified` и `partner` равны false. Неподтверждённые цена, наличие, доставка и сертификаты не подменяются числами.
-
-- Поиск, фильтры «Гофрокоробки» / «Бумажная посуда», сравнение до 3 позиций.
-- Паспорт с источниками и ограничениями проверки.
-- Редактируемый черновик запроса цены с загрузкой TXT. Автоматической отправки нет.
-- `GET /api/sources` получает данные из таблицы `source_listings`.
-- `server/sources.json` — редактируемый набор исследования; при запуске синхронизируется по ID в SQLite.
-- `sources-data.js` — тот же публичный снимок для работы GitHub Pages без API. При обновлении исследования обновляйте оба файла; тест проверяет совпадение.
-- Реальные источники не смешиваются с учебными числовыми предложениями и не принимаются API оформления заказа. Для сделки покупатель обращается напрямую на сайт компании.
-
-Интерфейс раздела переведён на RU/KZ/EN. Сами сведения исследования и шаблон запроса пока на русском.
-
-Подробные ссылки и ограничения: [SOURCES.md](SOURCES.md).
+The Smart Match module is intentionally transparent: it is a local rule/scoring prototype, not a claim of a production ML model or external AI service. A future version can replace the local parser and scoring layer with a real recommendation model or LLM-backed procurement agent.

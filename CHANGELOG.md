@@ -1,44 +1,3 @@
-# Реальные источники упаковки — 28 сентября 2026
-
-- Добавлены 6 позиций с сайтов 5 компаний, даты и ссылки исследования.
-- Неизвестные цены и партии сохраняются как null; цены «от» явно обозначены.
-- Поиск, фильтры, сравнение до 3 источников, паспорта и черновик запроса цены.
-- Таблица source_listings и GET /api/sources; статический снимок для GitHub Pages.
-- Реальные источники не участвуют в демонстрационной корзине и расчёте доставки.
-- Пройдены 12 автоматических тестов и проверка поиска, паспорта и сравнения в браузере.
-
-# Кабинет производителя — 28 сентября 2026
-
-- Регистрация, вход и выход с серверными сессиями и хешированием паролей.
-- Профиль компании: роль, город, описание и официальный сайт.
-- Добавление товаров в общий каталог.
-- Просмотр собственных позиций заявок и отдельные статусы по производителю.
-- Тесты авторизации и изоляции данных двух компаний.
-- Проверен полный сценарий в браузере на явно обозначенной учебной компании.
-
-# База и API — 28 сентября 2026
-
-- Добавлен локальный сервер Python и SQLite с пятью таблицами.
-- Интерфейс загружает каталог из API и сохраняет заявки с серверным расчётом.
-- Добавлены контакт, номер заявки и индикатор подключения базы.
-- Повторная отправка с тем же ключом не создаёт дубликат.
-- Статический режим явно сообщает, что заявка не сохранена.
-- Пройдены семь автоматических тестов и сохранение заявки через браузер.
-
-# Обновление дизайна и функций — 28 сентября 2026
-
-- Новый зелёно-молочный интерфейс и восемь локальных иллюстраций.
-- Избранное с сохранением, категории и счётчик результатов.
-- Паспорт источника с явным статусом отсутствия подтверждения.
-- Экспорт корзины в CSV.
-- Исправлен учёт минимальной партии в карточках, сравнении и калькуляторе.
-- Добавлено удержание фокуса в диалогах и возврат к исходной кнопке.
-- Обновлены README и инструкции для запуска.
-
-Проверено в браузере: поиск, категории, сохранение избранного, паспорт, корзина, CSV, RU/KZ/EN, минимальная партия, самовывоз. Визуально проверены ширины 1440 и 390 px; на 390 px горизонтального переполнения нет. Ошибок JavaScript в консоли при проверке не обнаружено.
-
----
-
 # FactoryDirect — improvements from the original MVP
 
 ## Product / UX
@@ -67,3 +26,39 @@
 - Relative links only.
 - `.nojekyll` included.
 - README includes exact GitHub Pages deployment steps and a short judge demo flow.
+
+## Frontend polish
+- Hero offer card is now calculated by the same pricing engine as the calculator, so its numbers always match.
+- Checkout flow: cart → company details form with validation → success screen with request summary per manufacturer.
+- Smart Match summary uses the product unit (kg, pcs…) instead of generic "units".
+- Suppliers below the minimum order are shown (not hidden) in Smart Match and the comparison table, with a "quote for MOQ" button; the calculator explains when it raises the quantity to the minimum.
+- Global buyer delivery city, persisted and applied to all calculators and quick add.
+- Cart counter shows line items; cart lines show delivery mode, cost and ETA plus goods / delivery subtotals.
+- Catalog "from" price is the lowest volume tier.
+- Deep links for product and manufacturer modals, plus "Copy link".
+- Modal focus trap and focus return.
+- Favicon and Open Graph meta tags.
+- Category-coloured product visuals.
+
+## Multi-page structure
+- Landing page split into routed pages: landing, catalog, product, manufacturers, manufacturer, Smart Match, cart, 404.
+- Product and manufacturer modals became pages; supplier comparison and the calculator moved to the product page.
+- Catalog filters, Smart Match parameters, products and manufacturers all have shareable URLs; browser Back works.
+- Old one-page anchors and `#product=` / `#maker=` links redirect to the new routes.
+- 2GIS map (MapGL) on the manufacturers page, with a schematic fallback when the key is missing or invalid.
+
+## Django backend and admin
+- Django 5.2 backend with PostgreSQL; the site is served by Django (WhiteNoise) from `frontend/`.
+- Admin panel for products, offers and price tiers, manufacturers, cities and distances, categories, delivery tariffs and orders.
+- `GET /api/catalog/` replaces the data that used to be hardcoded in `script.js`; `seed_demo` loads the original demo data.
+- Checkout sends orders to `POST /api/orders/`; the server validates and prices them and stores a price snapshot per item.
+- Home metrics and map coverage are calculated from the database.
+
+## Docker
+- `docker compose up --build` starts PostgreSQL 16 and the site (gunicorn + WhiteNoise); migrations, demo data and the admin user are set up automatically.
+- `seed_demo --if-empty` keeps admin edits on restarts.
+
+## Buyer accounts
+- Registration and sign-in with e-mail and password, account page with company details and request history with statuses.
+- Requests can only be placed after sign-in and are linked to the buyer; CSRF protection enabled for all API writes.
+- Sign-in lockout after 5 failed attempts for 15 minutes.

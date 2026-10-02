@@ -1,0 +1,8 @@
+.env
+.venv
+.idea
+.git
+**/__pycache__
+**/*.pyc
+backend/staticfiles
+docker-compose.yml
